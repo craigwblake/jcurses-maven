@@ -98,7 +98,8 @@ public class Toolkit {
     url=url.trim();
     if (url.startsWith("jar:file:")) {
       url = url.substring("jar:file:".length(),url.length());
-      url = url.substring(0,url.length()-"/jcurses.jar!/jcurses/system/Toolkit.class".length());
+      int index = url.indexOf("!");
+      url = url.substring(0, index);
     } else if (url.startsWith("file:")) {
       url = url.substring("file:".length(),url.length());
       url = url.substring(0,url.length()-"/classes/jcurses/system/Toolkit.class".length());
@@ -106,6 +107,8 @@ public class Toolkit {
     } else {
       throw new RuntimeException("couldn't find jcurses library");
     }
+    File file = new File(url);
+    url = file.getParentFile().getAbsolutePath().toString();
     String [] fileNames = new File(url).list();
     boolean found = false;
     for (int i=0; i<fileNames.length; i++) {
